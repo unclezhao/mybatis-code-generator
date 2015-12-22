@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.generator.dao.MgTableDao">
+    
+    <resultMap id="RmTable" type="TaTable" >
+        <result property="tableSchema"          column="TABLE_SCHEMA"/>
+        <result property="tableName"            column="TABLE_NAME"/>
+        <result property="gmtCreate"            column="CREATE_TIME"/>
+    </resultMap>
+    
+	<sql id="queryField">
+		TABLE_SCHEMA, TABLE_NAME, CREATE_TIME
+	</sql>
+    
+    <select id="query" resultMap="RmTable" >
+        SELECT <include refid="queryField" />
+          FROM TABLES
+            <trim prefix="WHERE" prefixOverrides="AND|OR">
+                <if test="tableName!=null">
+                    AND TABLE_NAME = #{tableName}
+                </if>
+                <if test="tableSchema!=null">
+                    AND TABLE_SCHEMA = #{tableSchema}
+                </if>
+            </trim>
+    </select>
+</mapper>

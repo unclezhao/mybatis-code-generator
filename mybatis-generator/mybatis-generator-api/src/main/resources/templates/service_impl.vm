@@ -1,0 +1,60 @@
+package ${context.packageName};
+
+import ${context.doContext.packageName}.${context.doContext.className};
+import ${context.dtoContext.packageName}.${context.dtoContext.className};
+import ${context.daoContext.packageName}.${context.daoContext.className};
+import ${context.serviceContext.packageName}.${context.serviceContext.className};
+
+#parse("templates/info.vm")
+
+public class ${context.className} implements ${context.serviceContext.className} {
+
+    private ${context.daoContext.className} ${context.daoFieldName};
+
+    /**
+     * insert entity
+     *
+     * @param entity ${context.dtoContext.className}
+     * @return generated id
+     */
+    @Override
+    public Long insert(${context.dtoContext.className} entity) {
+        if(entity == null)
+            return 0L;
+        ${context.daoFieldName}.insert(entity.toDO());
+        return entity.getId();
+    }
+
+#if(${context.hasPrimaryKey()})
+    /**
+     * query by id
+     *
+     * @param id ${context.primaryKeyJavaType}
+     * @return ${context.dtoContext.className} entity
+     */
+    @Override
+    public ${context.dtoContext.className} get(${context.primaryKeyJavaType} id) {
+        if(id == null || id == 0L)
+            return null;
+        ${context.doContext.className} ${context.doFieldName} = ${context.daoFieldName}.get(id);
+        return convert(${context.doFieldName});
+    }
+
+    /**
+     * update entity
+     *
+     * @param entity ${context.dtoContext.className}
+     * @return updated row number
+     */
+    @Override
+    public Integer update(${context.dtoContext.className} entity) {
+        if(entity == null)
+            return 0;
+        return ${context.daoFieldName}.update(entity.toDO());
+    }
+
+    private ${context.dtoContext.className} convert(${context.doContext.className} ${context.doFieldName}) {
+        return ${context.doFieldName} == null ? null : new ${context.dtoContext.className}(${context.doFieldName});
+    }
+#end
+}

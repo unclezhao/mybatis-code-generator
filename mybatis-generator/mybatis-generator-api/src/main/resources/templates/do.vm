@@ -1,0 +1,25 @@
+package ${context.packageName};
+
+#foreach($importType in ${context.importTypes})
+import ${importType};
+#end
+
+#parse("templates/info.vm")
+
+public class ${context.className} extends SerialModel {
+
+#foreach($column in ${context.columns})
+    private ${column.javaType} ${column.fieldName};
+#end
+
+#foreach($column in ${context.columns})
+    public void ${column.setterMethod}(${column.javaType} ${column.fieldName}) {
+        this.${column.fieldName} = ${column.fieldName};
+    }
+
+    public ${column.javaType} ${column.getterMethod}() {
+        return ${column.fieldName};
+    }
+
+#end
+}

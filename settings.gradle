@@ -1,0 +1,9 @@
+rootProject.name="mybatis-code-generator"
+
+include ':mybatis-generator', ':mybatis-generator:mybatis-generator-api', ':mybatis-generator:mybatis-generator-mysql'
+project(':mybatis-generator').projectDir = new File(settingsDir, 'mybatis-generator')
+project(':mybatis-generator:mybatis-generator-api').projectDir = new File(settingsDir, 'mybatis-generator/mybatis-generator-api')
+project(':mybatis-generator:mybatis-generator-mysql').projectDir = new File(settingsDir, 'mybatis-generator/mybatis-generator-mysql')
+
+include ':mybatis-generator-sample'
+project(':mybatis-generator-sample').projectDir = new File(settingsDir, 'mybatis-generator-sample')

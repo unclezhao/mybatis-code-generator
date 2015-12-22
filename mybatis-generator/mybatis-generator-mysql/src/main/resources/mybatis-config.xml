@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="config/jdbc.properties" />
+    <typeAliases>
+        <typeAlias alias="TaColumn" type="mybatis.generator.domain.MgColumnDO"/>
+        <typeAlias alias="TaTable" type="mybatis.generator.domain.MgTableDO"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="mybatis.generator.config.DruidDataSourceFactory">
+                <property name="driverClassName" value="${jdbc.driver}" />
+                <property name="url" value="${jdbc.url}" />
+                <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
+                <property name="maxActive" value="1" />
+                <property name="initialSize" value="1" />
+                <property name="maxWait" value="30000" />
+                <property name="minIdle" value="1" />
+                <property name="removeAbandoned" value="true" />
+                <property name="removeAbandonedTimeout" value="10000" />
+                <property name="connectionProperties" value="clientEncoding=UTF-8" />
+                <property name="defaultCatalog" value="information_schema" />
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis/MgColumnDao.xml"/>
+        <mapper resource="mybatis/MgTableDao.xml"/>
+    </mappers>
+</configuration>

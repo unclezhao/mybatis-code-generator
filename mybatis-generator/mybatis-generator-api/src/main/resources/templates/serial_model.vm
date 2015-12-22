@@ -1,0 +1,17 @@
+package ${context.packageName};
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.io.Serializable;
+
+#parse("templates/info.vm")
+
+public class SerialModel implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+}

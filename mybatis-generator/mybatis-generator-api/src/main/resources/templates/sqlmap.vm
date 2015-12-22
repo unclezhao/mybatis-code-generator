@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${context.daoContext.packageName}.${context.daoContext.className}">
+
+    <resultMap id="${context.resultMapName}" type="${context.doContext.className}" >
+#foreach($column in $context.doContext.columns)
+#if(${column.isPrimaryKey()})
+        <id     property="${column.fieldName}"${context.printSpaces(${column.fieldName})}column="${column.columnNameUC}"/>
+#else
+        <result property="${column.fieldName}"${context.printSpaces(${column.fieldName})}column="${column.columnNameUC}"/>
+#end
+#end
+    </resultMap>
+
+    <sql id="queryField">
+#set ($i=0)
+#foreach($column in ${context.doContext.columns})
+    #if($i==0)    #end#if($i>0), ${column.columnNameUC}#else${column.columnNameUC}#end
+    #if($i%6==0&&${i}!=0)
+
+    #end
+#set ($i=$i+1)
+#end
+
+    </sql>
+
+    <insert id="insert" parameterType="${context.doContext.className}" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ${context.tableNameUC} (
+#set ($i=0)
+#foreach($column in ${context.doContext.columns})
+#if(!${column.isPrimaryKey()})
+    #if($i==0)    #end#if($i>0), ${column.columnNameUC}#else${column.columnNameUC}#end
+    #if($i%6==0&&${i}!=0)
+
+    #end
+    #set ($i=$i+1)
+#end
+#end
+
+        ) VALUES (
+#set ($i=0)
+#foreach($column in ${context.doContext.columns})
+#if(!${column.isPrimaryKey()})
+    #if($i==0)    #end#if($i>0), #end#if(${column.hasDefaultVal})${column.columnDefault}#else#{${column.fieldName}}#end
+    #if($i%6==0&&${i}!=0)
+
+    #end
+    #set ($i=$i+1)
+#end
+#end
+
+        )
+    </insert>
+
+#if(${context.hasPrimaryKey()})
+    <select id="get" resultMap="${context.resultMapName}" >
+        SELECT <include refid="queryField" />
+        FROM ${context.tableNameUC}
+        WHERE ID = #{0}
+        LIMIT 1
+    </select>
+
+    <update id="update" parameterType="${context.doContext.className}">
+        UPDATE ${context.tableNameUC}
+        SET
+#set ($i=0)
+#foreach($column in ${context.doContext.columns})
+#if(!${column.isPrimaryKey()})
+#if(${column.columnNameUC}=='GMT_CREATE'||${column.columnNameUC}=='GMT_MODIFIED'||${column.columnNameUC}=='GMT_DELETE')
+        #if($i>0), #end${column.columnName} = NOW()
+    #set ($i=$i+1)
+#else
+        <if test="${column.fieldName}!=null#if(${column.javaType}=='String') and ${column.fieldName}!=''#end">
+            #if($i>0), #end${column.columnName} = #{${column.fieldName}}
+        #set ($i=$i+1)
+</if>
+#end
+#end
+#end
+
+        WHERE ID = #{id}
+    </update>
+#end
+</mapper>

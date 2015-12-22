@@ -1,0 +1,37 @@
+package ${context.packageName};
+
+#foreach($importType in ${context.doContext.importTypes})
+import ${importType};
+#end
+
+import ${context.doContext.packageName}.${context.doContext.className};
+import ${context.doContext.packageName}.SerialModel;
+
+#parse("templates/info.vm")
+
+public class ${context.className} extends SerialModel {
+
+    private ${context.doContext.className} ${context.doFieldName};
+
+    public ${context.className}() {
+        this(new ${context.doContext.className}());
+    }
+
+    public ${context.className}(${context.doContext.className} ${context.doFieldName}) {
+        this.${context.doFieldName} = ${context.doFieldName};
+    }
+
+#foreach($column in ${context.doContext.columns})
+    public void ${column.setterMethod}(${column.javaType} ${column.fieldName}) {
+        ${context.doFieldName}.${column.setterMethod}(${column.fieldName});
+    }
+
+    public ${column.javaType} ${column.getterMethod}() {
+        return ${context.doFieldName}.${column.getterMethod}();
+    }
+
+#end
+    public ${context.doContext.className} toDO() {
+        return ${context.doFieldName};
+    }
+}

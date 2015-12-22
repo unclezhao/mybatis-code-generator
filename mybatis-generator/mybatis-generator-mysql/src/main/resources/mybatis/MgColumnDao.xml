@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.generator.dao.MgColumnDao">
+    
+    <resultMap id="RmColumn" type="TaColumn" >
+        <result property="dbSchema"             column="TABLE_SCHEMA"/>
+        <result property="tableName"            column="TABLE_NAME"/>
+        <result property="columnName"           column="COLUMN_NAME"/>
+        <result property="ordinalPosition"      column="ORDINAL_POSITION"/>
+        <result property="columnDefault"        column="COLUMN_DEFAULT"/>
+        <result property="isNullable"           column="IS_NULLABLE"/>
+        <result property="dataType"             column="DATA_TYPE"/>
+        <result property="columnKey"            column="COLUMN_KEY"/>
+    </resultMap>
+    
+	<sql id="queryField">
+		TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, ORDINAL_POSITION, COLUMN_DEFAULT, IS_NULLABLE, DATA_TYPE, COLUMN_KEY
+	</sql>
+    
+    <select id="query" resultMap="RmColumn" >
+        SELECT <include refid="queryField" />
+          FROM COLUMNS
+            <trim prefix="WHERE" prefixOverrides="AND|OR">
+                <if test="dbSchema!=null">
+                    AND TABLE_SCHEMA = #{dbSchema}
+                </if>
+                <if test="tableName!=null">
+                    AND TABLE_NAME = #{tableName}
+                </if>
+            </trim>
+    </select>
+</mapper>

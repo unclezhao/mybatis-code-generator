@@ -1,0 +1,32 @@
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+archivesBaseName = 'mybatis-generator-sample'
+
+dependencies {
+
+    compile (
+			project(':mybatis-generator:mybatis-generator-api'),
+			project(':mybatis-generator:mybatis-generator-mysql'),
+            libraries.'mysql-connector-java',
+            libraries.'druid',
+            libraries.'mybatis',
+            libraries.'mybatis-spring',
+            libraries.'commons-lang3',
+            libraries.'commons-io',
+            libraries.'slf4j-api',
+            libraries.'slf4j-log4j12',
+            libraries.'log4j',
+            libraries.'velocity',
+    )
+
+    testCompile (
+            libraries.'spring-test',
+            libraries.'mockito-core',
+            libraries.'junit',
+    )
+
+}

@@ -1,0 +1,34 @@
+package ${context.packageName};
+
+import ${context.dtoContext.packageName}.${context.dtoContext.className};
+
+#parse("templates/info.vm")
+
+public interface ${context.className} {
+
+    /**
+     * insert entity
+     *
+     * @param entity ${context.dtoContext.className}
+     * @return generated id
+     */
+    Long insert(${context.dtoContext.className} entity);
+
+#if(${context.hasPrimaryKey()})
+    /**
+     * query by id
+     *
+     * @param id ${context.primaryKeyJavaType}
+     * @return ${context.dtoContext.className} entity
+     */
+    ${context.dtoContext.className} get(${context.primaryKeyJavaType} id);
+
+    /**
+     * update entity
+     *
+     * @param entity ${context.dtoContext.className}
+     * @return updated row number
+     */
+    Integer update(${context.dtoContext.className} entity);
+#end
+}
